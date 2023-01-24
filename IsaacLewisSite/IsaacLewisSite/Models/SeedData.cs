@@ -11,6 +11,7 @@ namespace IsaacLewisSite.Models
     {
         public static void Seed(ApplicationDbContext context)
         {
+            /*
             if (!context.Stories.Any())
             {
                 AppUser isaac = new AppUser() { UserName = "Isaac Lewis" };
@@ -51,7 +52,8 @@ namespace IsaacLewisSite.Models
                 context.Stories.Add(story);
 
                 context.SaveChanges();
-            }
+            
+            }*/
         }
     }
 }
