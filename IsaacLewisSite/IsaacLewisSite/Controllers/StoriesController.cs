@@ -1,5 +1,6 @@
 ﻿using IsaacLewisSite.Models;
 using IsaacLewisSite.Repos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,9 +12,11 @@ namespace IsaacLewisSite.Controllers
     public class StoriesController : Controller
     {
         IStoryRepository repo;
-        public StoriesController(IStoryRepository r)
+        UserManager<AppUser> userManager;
+        public StoriesController(IStoryRepository r, UserManager<AppUser> userMngr)
         {
             repo = r;
+            userManager = userMngr;
         }
         
         public IActionResult Index(string userName, string submitDate)
@@ -44,6 +47,7 @@ namespace IsaacLewisSite.Controllers
         [HttpPost]
         public IActionResult Story(Story model)
         {
+            model.User = userManager.GetUserAsync(User).Result;
             model.SubmitDate = DateTime.Now.Date;
             repo.AddStory(model);
             return RedirectToAction("Index", View(model));
