@@ -1,5 +1,6 @@
 ﻿using IsaacLewisSite.Models;
 using IsaacLewisSite.Repos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,11 +40,13 @@ namespace IsaacLewisSite.Controllers
             return View(stories);
         }
 
+        [Authorize]
         public IActionResult Story()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Story(Story model)
         {

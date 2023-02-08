@@ -76,5 +76,10 @@ namespace IsaacLewisSite.Controllers
             ModelState.AddModelError("", "Invalid username/password."); 
             return View(model);
         }
+
+        public ViewResult AccessDenied()
+        {
+            return View();
+        }
     }
 }
