@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,17 @@ namespace IsaacLewisSite.Models
 {
     public class SeedData
     {
-        public static void Seed(ApplicationDbContext context)
+        public static void Seed(ApplicationDbContext context, IServiceProvider provider)
         {
+            
             if (!context.Stories.Any())
             {
-                AppUser isaac = new AppUser() { UserName = "Isaac Lewis" };
-                context.AppUsers.Add(isaac);
+                var userManager = provider.GetRequiredService<UserManager<AppUser>>();
+                const string SECRET_PASSWORD = "Super_Secret";
+                AppUser isaac = new AppUser { UserName = "Isaac Lewis" };
+                var result = userManager.CreateAsync(isaac, SECRET_PASSWORD);
+                AppUser luke = new AppUser { UserName = "Luke Skywalker" };
+                result = userManager.CreateAsync(luke, SECRET_PASSWORD);
                 context.SaveChanges();
 
                 Story story = new Story
@@ -45,12 +51,13 @@ namespace IsaacLewisSite.Models
                     StoryTopic = "A new hope has appeared",
                     StoryDate = 0,
                     StoryText = "The start of Lukes journey",
-                    User = new AppUser { UserName = "Luke Skywalker"},
+                    User = luke,
                     SubmitDate = DateTime.Parse("11/16/2022")
                 };
                 context.Stories.Add(story);
 
                 context.SaveChanges();
+            
             }
         }
     }

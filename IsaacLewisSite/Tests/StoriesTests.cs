@@ -34,7 +34,7 @@ namespace Tests
         }
 
         [Fact]
-        public void StoryTitleFilterTest()
+        public void StoryDateFilterTest()
         {
             var fakeRepo = new FakeStoryRepository();
             var controller = new StoriesController(fakeRepo);
@@ -68,12 +68,12 @@ namespace Tests
                 User = new AppUser() { UserName = "Randomer" }
             };
             controller.Story(story);
-
-            var viewResult = (ViewResult)controller.Index("Testing1", null);
+            var date = "1/23/2023";
+            var viewResult = (ViewResult)controller.Index(null, date);
 
             var stories = (List<Story>)viewResult.ViewData.Model;
 
-            Assert.Equal(1, stories.Count);
+            Assert.Equal(3, stories.Count);
             Assert.Equal(stories[0].StoryTitle, "Testing1");
         }
 
@@ -113,7 +113,7 @@ namespace Tests
             };
             controller.Story(story);
 
-            var viewResult = (ViewResult)controller.Index(null, "Isaac Lewis");
+            var viewResult = (ViewResult)controller.Index("Isaac Lewis", null);
 
             var stories = (List<Story>)viewResult.ViewData.Model;
 
