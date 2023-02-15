@@ -38,12 +38,12 @@ namespace Tests
               var retrievedItem = repo.Stories.ToList()[0];
               Assert.Equal(retrievedItem.StoryTitle, "Testing1");*/
 
-            var result = controller.Story(new Story { });
+            var result = controller.Story(new Story { }).Result;
             Assert.True(result.GetType() == typeof(RedirectToActionResult));
         }
-
-          /*[Fact]
-          public void StoryDateFilterTest()
+        /* I couldn't get this working
+          [Fact]
+          public async void StoryDateFilterTest()
           {
               var story = new Story()
               {
@@ -51,10 +51,10 @@ namespace Tests
                   StoryTopic = "Really good testing",
                   StoryDate = 1000,
                   StoryText = "The epic story of testing",
-                  User = new AppUser() { UserName = "Isaac Lewis" }
+                  User = new AppUser() { UserName = "IsaacLewis" }
               };
 
-              controller.Story(story);
+              controller.Story(story).Wait();
 
               story = new Story()
               {
@@ -62,9 +62,9 @@ namespace Tests
                   StoryTopic = "Really good testing",
                   StoryDate = 1000,
                   StoryText = "The epic story of testing",
-                  User = new AppUser() { UserName = "Isaac Lewis" }
+                  User = new AppUser() { UserName = "IsaacLewis" }
               };
-              controller.Story(story);
+              controller.Story(story).Wait();
 
               story = new Story()
               {
@@ -74,14 +74,14 @@ namespace Tests
                   StoryText = "The epic story of testing",
                   User = new AppUser() { UserName = "Randomer" }
               };
-              controller.Story(story);
+              controller.Story(story).Wait();
               var date = "1/23/2023";
-              var viewResult = (ViewResult)controller.Index(null, date);
+              var viewResult = (ViewResult)controller.Index(null, date).Result;
 
               var stories = (List<Story>)viewResult.ViewData.Model;
 
               Assert.Equal(3, stories.Count);
-              Assert.Equal(stories[0].StoryTitle, "Testing1");
+              Assert.Equal("Testing1", stories[0].StoryTitle);
           }
 
           [Fact]
@@ -93,10 +93,10 @@ namespace Tests
                   StoryTopic = "Really good testing",
                   StoryDate = 1000,
                   StoryText = "The epic story of testing",
-                  User = new AppUser() { UserName = "Isaac Lewis" }
+                  User = new AppUser() { UserName = "IsaacLewis" }
               };
 
-              controller.Story(story);
+              controller.Story(story).Wait();
 
               story = new Story()
               {
@@ -104,9 +104,9 @@ namespace Tests
                   StoryTopic = "Really good testing",
                   StoryDate = 1000,
                   StoryText = "The epic story of testing",
-                  User = new AppUser() { UserName = "Isaac Lewis" }
+                  User = new AppUser() { UserName = "IsaacLewis" }
               };
-              controller.Story(story);
+              controller.Story(story).Wait();
 
               story = new Story()
               {
@@ -116,15 +116,15 @@ namespace Tests
                   StoryText = "The epic story of testing",
                   User = new AppUser() { UserName = "Randomer" }
               };
-              controller.Story(story);
+              controller.Story(story).Wait();
 
-              var viewResult = (ViewResult)controller.Index("Isaac Lewis", null);
+              var viewResult = (ViewResult)controller.Index("IsaacLewis", null).Result;
 
               var stories = (List<Story>)viewResult.ViewData.Model;
 
               Assert.Equal(2, stories.Count);
-              Assert.Equal(stories[0].StoryTitle, "Testing1");
-              Assert.Equal(stories[0].User.UserName, "Isaac Lewis");
+              Assert.Equal("Testing1", stories[0].StoryTitle);
+              Assert.Equal("Isaac Lewis", stories[0].User.UserName);
           }*/
     }
 }
