@@ -9,6 +9,6 @@ namespace IsaacLewisSite.Repos
     public interface IStoryRepository
     {
         IQueryable<Story> Stories { get; }
-        void AddStory(Story story);
+        public Task<int> StoreStoryAsync(Story model);
     }
 }

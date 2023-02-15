@@ -19,10 +19,14 @@ namespace IsaacLewisSite.Controllers
         public async Task<IActionResult> Index()
         {
             List<AppUser> users = new List<AppUser>();
-            foreach (AppUser user in userManager.Users)
+            users = userManager.Users.ToList();
+            foreach (AppUser user in users)
             {
-                user.RoleNames = await userManager.GetRolesAsync(user);
-                users.Add(user);
+                var task = userManager.GetRolesAsync(user);
+                task.Wait();
+                user.RoleNames = task.Result;
+                /*user.RoleNames = await userManager.GetRolesAsync(user);
+                users.Add(user);*/
             }
             UserVM model = new UserVM
             {

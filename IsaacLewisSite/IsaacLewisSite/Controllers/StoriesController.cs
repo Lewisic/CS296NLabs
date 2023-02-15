@@ -20,18 +20,18 @@ namespace IsaacLewisSite.Controllers
             userManager = userMngr;
         }
         
-        public IActionResult Index(string userName, string submitDate)
+        public async Task<IActionResult> Index(string userName, string submitDate)
         {
             List<Story> stories;
 
             if (submitDate != null)
             {
                 
-                stories = (from r in repo.Stories where r.SubmitDate.Date == DateTime.Parse(submitDate).Date select r).ToList<Story>();
+                 stories = await (from r in repo.Stories where r.SubmitDate.Date == DateTime.Parse(submitDate).Date select r).ToListAsync<Story>();
             }
             else if (userName != null)
             {
-                stories = (from r in repo.Stories where r.User.UserName == userName select r).ToList<Story>();
+                stories = await (from r in repo.Stories where r.User.UserName == userName select r).ToListAsync<Story>();
             }
             else
             {
@@ -48,13 +48,20 @@ namespace IsaacLewisSite.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Story(Story model)
+        public async Task<IActionResult> Story(Story model)
         {
-            model.User = userManager.GetUserAsync(User).Result;
-            model.SubmitDate = DateTime.Now.Date;
-            repo.AddStory(model);
-            return RedirectToAction("Index", View(model));
-            //return View(model);
+            if (userManager != null) 
+            {
+                model.User = await userManager.GetUserAsync(User);
+            }
+            if (await repo.StoreStoryAsync(model) > 0) 
+            {
+                return RedirectToAction("Index", new { storyId = model.StoryID});
+            }
+            else
+            {
+                return View(); //add error message later
+            }
         }
 
     }

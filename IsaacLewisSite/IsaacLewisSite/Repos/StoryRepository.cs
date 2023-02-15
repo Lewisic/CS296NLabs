@@ -24,10 +24,11 @@ namespace IsaacLewisSite.Repos
             }
         }
 
-        public void AddStory(Story story)
+        public async Task<int> StoreStoryAsync(Story model)
         {
-            context.Stories.Add(story);
-            context.SaveChanges();
+            model.SubmitDate = DateTime.Now.Date;
+            context.Stories.Add(model);
+            return await context.SaveChangesAsync();
         }
     }
 }
