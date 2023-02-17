@@ -41,7 +41,16 @@ namespace Tests
             var result = controller.Story(new Story { }).Result;
             Assert.True(result.GetType() == typeof(RedirectToActionResult));
         }
-        /* I couldn't get this working
+
+        [Fact]
+        public void StoreStoryFailTest()
+        {
+            var result = controller.Story(null).Result;
+
+            Assert.True(result.GetType() == typeof(ViewResult));
+        }
+
+        /* Get these working later
           [Fact]
           public async void StoryDateFilterTest()
           {
@@ -75,7 +84,7 @@ namespace Tests
                   User = new AppUser() { UserName = "Randomer" }
               };
               controller.Story(story).Wait();
-              var date = "1/23/2023";
+              var date = "2/16/2023";
               var viewResult = (ViewResult)controller.Index(null, date).Result;
 
               var stories = (List<Story>)viewResult.ViewData.Model;
