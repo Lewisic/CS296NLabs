@@ -64,5 +64,31 @@ namespace IsaacLewisSite.Controllers
             }
         }
 
+        [Authorize]
+        public IActionResult Comment(int storyID)
+        {
+            var commentVM = new CommentVM { StoryID = storyID };
+            return View(commentVM);
+        }
+
+        [HttpPost]
+        public async Task<RedirectToActionResult> Comment(CommentVM commentVM)
+        {
+            var comment = new Comment { CommentText = commentVM.CommentText };
+
+            if (userManager != null)
+            {
+                comment.Commenter = await userManager.GetUserAsync(User);
+                comment.Commenter.Name = comment.Commenter.UserName;
+                comment.CommentDate = DateTime.Now;
+            }
+
+            var story = await repo.GetStoryByIdAsync(commentVM.StoryID);
+
+            story.Comments.Add(comment);
+            await repo.UpdateStoryAsync(story);
+
+            return RedirectToAction("Index", new { userName = story.User});
+        }
     }
 }

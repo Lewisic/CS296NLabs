@@ -26,6 +26,7 @@ namespace IsaacLewisSite.Controllers
             //if (ModelState.IsValid)
             {
                 var user = new AppUser { UserName = model.Username };
+                user.Name = user.UserName;
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

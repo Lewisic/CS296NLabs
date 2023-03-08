@@ -9,5 +9,7 @@ namespace IsaacLewisSite
         public ApplicationDbContext(
             DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<Story> Stories { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
     }
 }

@@ -17,6 +17,11 @@ namespace IsaacLewisSite.Repos
             get { return stories.AsQueryable<Story>(); }
         }
 
+        public Task<int> DeleteStoryAsync(Story story)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<int> StoreStoryAsync(Story model)
         {
             int status = 0;
@@ -27,6 +32,11 @@ namespace IsaacLewisSite.Repos
                 status = 1;
             }
             return status;
+        }
+
+        public Task UpdateStoryAsync(Story story)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,6 +8,8 @@ namespace IsaacLewisSite.Models
     {
         public DateTime SignUpDate { get; set; }
 
+        public string Name { get; set; }
+
         [NotMapped] 
         public IList<string> RoleNames { get; set; } = null!;
     }
