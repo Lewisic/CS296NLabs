@@ -44,10 +44,31 @@
         <strong class="m-3">Story Text:</strong>
         @story.StoryText<br />
         <strong class="m-3">Created By:</strong>
-        @story.User.UserName<br />
+        @story.User.Name<br />
         <strong class="m-3">Creation Date:</strong>
         @story.SubmitDate.Date<br />
     </p>
+    <a asp-action="Comment" asp-route-storyID="@story.StoryID" class="btn-sm btn-secondary col-3 m-3">Add Comment</a>
+
+    if (story.Comments.Count != 0)
+    {
+        <h5 class="m-3">Comments</h5>
+
+        foreach (var comment in story.Comments)
+        {
+            <p>
+                <p class="m-3">@comment.CommentText</p>
+                <strong class="m-3">By:</strong>
+                @comment.Commenter.Name
+                <br />
+                <strong class="m-3">Date:</strong>
+                @comment.CommentDate.Date
+                <br />
+            </p>
+        }
+    }
+    <br />
+    <hr />
 }
 
 <a href="/Stories/Story">Add a Story</a>

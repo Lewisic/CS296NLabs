@@ -26,6 +26,7 @@ namespace IsaacLewisSite.Controllers
             //if (ModelState.IsValid)
             {
                 var user = new AppUser { UserName = model.Username };
+                user.Name = user.UserName;
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -75,6 +76,11 @@ namespace IsaacLewisSite.Controllers
             }
             ModelState.AddModelError("", "Invalid username/password."); 
             return View(model);
+        }
+
+        public ViewResult AccessDenied()
+        {
+            return View();
         }
     }
 }

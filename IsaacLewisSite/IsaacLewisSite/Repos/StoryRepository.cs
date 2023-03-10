@@ -20,14 +20,33 @@ namespace IsaacLewisSite.Repos
         {
             get
             {
-                return context.Stories.Include(story => story.User);
+                return context.Stories.Include(story => story.User)
+                                      .Include(story => story.Comments)
+                                      .ThenInclude(comment => comment.Commenter);
             }
         }
-
-        public void AddStory(Story story)
+        public async Task<Story?> GetStoryByIdAsync(int id)
         {
-            context.Stories.Add(story);
-            context.SaveChanges();
+            return await Stories.Where(s => s.StoryID == id).FirstOrDefaultAsync();
+        }
+        public async Task<int> StoreStoryAsync(Story model)
+        {
+            model.SubmitDate = DateTime.Now.Date;
+            context.Stories.Add(model);
+            return await context.SaveChangesAsync();
+        }
+
+        public async Task UpdateStoryAsync(Story story)
+        {
+            context.Stories.Update(story);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteStoryAsync(Story story)
+        {
+            var theStory = await context.Stories.FindAsync(story.StoryID);
+            context.Stories.Remove(theStory);
+            return await context.SaveChangesAsync();
         }
     }
 }

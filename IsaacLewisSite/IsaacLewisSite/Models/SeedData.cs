@@ -17,9 +17,11 @@ namespace IsaacLewisSite.Models
             {
                 var userManager = provider.GetRequiredService<UserManager<AppUser>>();
                 const string SECRET_PASSWORD = "Super_Secret";
-                AppUser isaac = new AppUser { UserName = "Isaac Lewis" };
+                AppUser isaac = new AppUser { UserName = "IsaacLewis" };
+                isaac.Name = isaac.UserName;
                 var result = userManager.CreateAsync(isaac, SECRET_PASSWORD);
-                AppUser luke = new AppUser { UserName = "Luke Skywalker" };
+                AppUser luke = new AppUser { UserName = "LukeSkywalker" };
+                luke.Name = luke.UserName;
                 result = userManager.CreateAsync(luke, SECRET_PASSWORD);
                 context.SaveChanges();
 
