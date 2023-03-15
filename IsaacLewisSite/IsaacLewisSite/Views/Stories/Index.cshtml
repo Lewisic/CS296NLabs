@@ -2,6 +2,11 @@
 @{
     ViewData["Title"] = "Stories";
 }
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
 
 
 
@@ -46,7 +51,8 @@
         <strong class="m-3">Created By:</strong>
         @story.User.Name<br />
         <strong class="m-3">Creation Date:</strong>
-        @story.SubmitDate.Date<br />
+        @Html.DisplayFor(noParam => story.SubmitDate)
+        <br />
     </p>
     <a asp-action="Comment" asp-route-storyID="@story.StoryID" class="btn-sm btn-secondary col-3 m-3">Add Comment</a>
 
@@ -62,7 +68,7 @@
                 @comment.Commenter.Name
                 <br />
                 <strong class="m-3">Date:</strong>
-                @comment.CommentDate.Date
+                @Html.DisplayFor(noParam => comment.CommentDate)
                 <br />
             </p>
         }

@@ -23,7 +23,7 @@ namespace IsaacLewisSite.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
         {
-            //if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var user = new AppUser { UserName = model.Username };
                 user.Name = user.UserName;

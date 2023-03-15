@@ -1,4 +1,5 @@
-﻿using IsaacLewisSite.Models;
+﻿using IsaacLewisSite.Migrations;
+using IsaacLewisSite.Models;
 using IsaacLewisSite.Repos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -50,18 +51,21 @@ namespace IsaacLewisSite.Controllers
         [HttpPost]
         public async Task<IActionResult> Story(Story model)
         {
-            if (userManager != null) 
+            if (ModelState.IsValid)
             {
-                model.User = await userManager.GetUserAsync(User);
+                if (userManager != null)
+                {
+                    model.User = await userManager.GetUserAsync(User);
+                    model.User.Name = model.User.UserName;
+                }
+
+
+                if (await repo.StoreStoryAsync(model) > 0)
+                {
+                    return RedirectToAction("Index", new { storyId = model.StoryID });
+                }
             }
-            if (await repo.StoreStoryAsync(model) > 0) 
-            {
-                return RedirectToAction("Index", new { storyId = model.StoryID});
-            }
-            else
-            {
                 return View(); //add error message later
-            }
         }
 
         [Authorize]
@@ -72,23 +76,27 @@ namespace IsaacLewisSite.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectToActionResult> Comment(CommentVM commentVM)
+        public async Task<IActionResult> Comment(CommentVM commentVM)
         {
-            var comment = new Comment { CommentText = commentVM.CommentText };
 
-            if (userManager != null)
+            if (ModelState.IsValid)
             {
-                comment.Commenter = await userManager.GetUserAsync(User);
-                comment.Commenter.Name = comment.Commenter.UserName;
-                comment.CommentDate = DateTime.Now;
+                var comment = new Comment { CommentText = commentVM.CommentText };
+
+                if (userManager != null)
+                {
+                    comment.Commenter = await userManager.GetUserAsync(User);
+                    comment.Commenter.Name = comment.Commenter.UserName;
+                    comment.CommentDate = DateTime.Now;
+                }
+
+                var story = await repo.GetStoryByIdAsync(commentVM.StoryID);
+
+                story.Comments.Add(comment);
+                await repo.UpdateStoryAsync(story);
+                return RedirectToAction("Index", new { userName = story.User });
             }
-
-            var story = await repo.GetStoryByIdAsync(commentVM.StoryID);
-
-            story.Comments.Add(comment);
-            await repo.UpdateStoryAsync(story);
-
-            return RedirectToAction("Index", new { userName = story.User});
+            return View(commentVM);
         }
     }
 }
